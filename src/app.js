@@ -8,10 +8,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-
-if (process.env.NODE_ENV === "develop") {
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 app.use(
@@ -21,6 +18,9 @@ app.use(
     message: { message: "too many requests" },
   })
 );
+
+app.use(cors());
+app.use(express.json());
 app.use(helmet());
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
