@@ -4,7 +4,7 @@ exports.register = async (req, res, next) => {
   try {
     // 1.validate
     const value = validateRegister(req.body);
-
+    res.json(value);
     // 2.hash password
     // 3.insert to users table
     // 4.sign token and send response
