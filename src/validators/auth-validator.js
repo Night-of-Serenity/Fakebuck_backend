@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const validate = require("./validate");
 
 const registerSchema = Joi.object({
   firstName: Joi.string().trim().required(),
@@ -14,4 +15,4 @@ const registerSchema = Joi.object({
   confirmPassword: Joi.string().valid(Joi.ref("password")).trim().required(),
 });
 
-exports.validateRegister = (input) => registerSchema.validate(input);
+exports.validateRegister = validate(registerSchema);
