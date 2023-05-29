@@ -6,3 +6,8 @@ exports.checkEmailOrMobileExist = async (emailOrMobile) => {
 };
 
 exports.createUser = (user) => userRepository.createUser(user);
+
+exports.getUserByEmailOrMobile = async (emailOrMobile) => {
+  const user = await userRepository.getUserByEmailOrMobile(emailOrMobile);
+  return user;
+};
