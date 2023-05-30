@@ -11,3 +11,5 @@ exports.getUserByEmailOrMobile = async (emailOrMobile) => {
   const user = await userRepository.getUserByEmailOrMobile(emailOrMobile);
   return user;
 };
+
+exports.getUserById = (id) => userRepository.getUserById(id);
