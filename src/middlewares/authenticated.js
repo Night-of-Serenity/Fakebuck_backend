@@ -32,6 +32,9 @@ module.exports = async (req, res, next) => {
 
     // after all verify attrached user object to req
     req.user = user;
+
+    // forword to normal route
+    next();
   } catch (err) {
     next(err);
   }
