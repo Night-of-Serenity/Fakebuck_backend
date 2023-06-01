@@ -8,8 +8,12 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const authRoute = require("./routes/auth-route");
 const userRoute = require("./routes/user-route");
+const friendRoute = require("./routes/friend-route");
+const authenticate = require("./middlewares/authenticated");
 
 const app = express();
+
+app.use(cors());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -23,11 +27,11 @@ app.use(
 );
 
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 
 app.use("/auth", authRoute);
 app.use("/users", userRoute);
+app.use("/friends", authenticate, friendRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
