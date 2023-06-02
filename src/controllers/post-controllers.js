@@ -61,7 +61,7 @@ exports.getAllPostIncludeFriend = async (req, res, next) => {
     });
     // console.log(JSON.parse(JSON.stringify(posts)));
     // console.log(posts);
-    res.json(posts);
+    res.json({ posts });
   } catch (err) {
     next(err);
   }
