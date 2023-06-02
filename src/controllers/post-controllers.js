@@ -1,5 +1,5 @@
 const createError = require("../utils/create-error");
-const { Post, User } = require("../models/");
+const { Post, User, Like } = require("../models/");
 const uploadService = require("../services/upload-service");
 const friendService = require("../services/friend-service");
 const fs = require("fs");
@@ -61,13 +61,36 @@ exports.getAllPostIncludeFriend = async (req, res, next) => {
         userId: meIncludeFriendsId,
       },
       order: [["createdAt", "DESC"]],
-      include: {
-        model: User,
-      },
+      include: [
+        {
+          model: User,
+        },
+        { model: Like, include: User },
+      ],
     });
     // console.log(JSON.parse(JSON.stringify(posts)));
     // console.log(posts);
     res.json({ posts });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createLike = async (req, res, next) => {
+  try {
+    const existLike = await Like.findOne({
+      where: {
+        userId: req.user.id,
+        postId: req.params.postId,
+      },
+    });
+
+    if (existLike) {
+      createError("already liked this post", 400);
+    }
+
+    await Like.create({ userId: req.user.id, postId: req.params.postId });
+    res.status(201).json({ message: "success like" });
   } catch (err) {
     next(err);
   }
