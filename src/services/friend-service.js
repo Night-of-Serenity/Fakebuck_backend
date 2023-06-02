@@ -72,3 +72,24 @@ exports.getStatusWithTargetUserByUserId = async (targetUserId, userId) => {
 
   return REQUESTER;
 };
+
+exports.getFriendsIdByUserId = async (id) => {
+  const friendships = await Friend.findAll({
+    where: {
+      status: STATUS_ACCEPTED,
+      [Op.or]: [{ requesterId: id }, { receiverId: id }],
+    },
+  });
+
+  // console.log(JSON.stringify(friendships, null, 2));
+
+  return friendships.reduce((acc, el) => {
+    if (el.requesterId === +id) {
+      acc.push(el.receiverId);
+    } else {
+      acc.push(el.requesterId);
+    }
+    return acc;
+  }, []);
+  // console.log(result);
+};

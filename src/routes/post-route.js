@@ -4,5 +4,6 @@ const upload = require("../middlewares/upload");
 const router = express.Router();
 
 router.post("/", upload.single("image"), postController.createPost);
+router.get("/friends", postController.getAllPostIncludeFriend);
 
 module.exports = router;
