@@ -32,8 +32,14 @@ exports.createPost = async (req, res, next) => {
       value.image = result.secure_url;
     }
 
+    const newPost = await Post.create(value);
+    const post = await Post.findOne({
+      where: { id: newPost.id },
+      include: User,
+    });
+
     // put new input into post database
-    const post = await Post.create(value); // return post as object from post table data
+    // const post = await Post.create(value); // return post as object from post table data
 
     res.status(200).json({ post });
   } catch (err) {
