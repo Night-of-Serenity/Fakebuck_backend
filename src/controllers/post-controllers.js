@@ -76,7 +76,7 @@ exports.getAllPostIncludeFriend = async (req, res, next) => {
   }
 };
 
-exports.createLike = async (req, res, next) => {
+exports.toggleLike = async (req, res, next) => {
   try {
     const existLike = await Like.findOne({
       where: {
@@ -86,10 +86,17 @@ exports.createLike = async (req, res, next) => {
     });
 
     if (existLike) {
-      createError("already liked this post", 400);
+      //   await Like.destroy({
+      //     where: {
+      //         userId: req.user.id,
+      //         postId: req.params.id
+      //     }
+      //   })
+      await existLike.destroy();
+    } else {
+      await Like.create({ userId: req.user.id, postId: req.params.postId });
     }
 
-    await Like.create({ userId: req.user.id, postId: req.params.postId });
     res.status(201).json({ message: "success like" });
   } catch (err) {
     next(err);
